@@ -1,0 +1,10 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.caesar.boot.start.configuration.SignAutoConfiguration,\
+org.caesar.boot.start.configuration.ExceptionAutoConfiguration,\
+org.caesar.boot.start.configuration.CaesarAutoConfiguration,\
+  org.caesar.boot.start.runner.CaesarRunner,\
+  org.caesar.boot.start.feign.DefaultFeignInterceptor,\
+  org.caesar.boot.start.logbook.LogbookConfig,\
+  org.caesar.boot.start.logbook.TraceIdFilter,\
+  org.caesar.boot.start.feign.FeignOkHttpConfig,\
+  org.caesar.boot.start.feign.FeignLogInterceptor

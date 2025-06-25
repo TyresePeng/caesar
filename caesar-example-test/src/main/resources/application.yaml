@@ -1,0 +1,82 @@
+# 应用名称
+spring:
+  profiles:
+    active: dynamic-tp
+  application:
+    name: caesar-test
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/caesar?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: root
+    password: root
+  main:
+    banner-mode: off
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  global-config:
+    # 逻辑删除配置
+    db-config:
+      # 删除前
+      logic-not-delete-value: 1
+      # 删除后
+      logic-delete-value: 0
+    banner: false
+
+caesar:
+  system-error:
+    listener:
+      enable: true
+  exception:
+    enable: true
+  sign:
+    enable: true
+    scan-aspect: org.caesartest.sign.*.*(..)
+    nonce-barrel-size: 1
+    timeout: 5h
+    auth-apps:
+      access-Key-test: secret-key-test
+
+
+logbook:
+  format:
+    style: json
+
+logging:
+  level:
+    org.zalando.logbook: TRACE
+
+test:
+  feign:
+    name: test-http-feign
+    url: 127.0.0.1:8080
+
+management:
+  security:
+    enabled: false
+  # 可以指定暴露哪些actuator服务，'*'为全部，注意加上引号，被注释的写法表示只允许health，info
+  endpoints:
+    web:
+      exposure:
+        #include: health,info
+        include: '*'
+  endpoint:
+    # 表示可以通过/actuator/shutdown停止服务
+    shutdown:
+      enabled: true
+    # 表示health的内容显示的更加详细内容，不光只status
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  info: # 显示任意的应用信息，默认关闭，如果是更低一些的版本默认是开启的
+    env:
+      enabled: true
+
+server:
+  port: 8087
+# feign 使用okhttp客户端
+

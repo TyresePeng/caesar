@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+scan：当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒当scan为true时，此属性生效。默认的时间间隔为1分钟。
+debug：当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
+-->
+<configuration scan="false" scanPeriod="60 seconds" debug="false">
+    <!--导入默认的Spring-boot logback配置，该文件给出了logback的一些默认配置。 -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+    <springProperty scope="context" name="PROJECT_NAME_BASE" source="spring.application.name"/>
+
+    <property scope="context" name="PROJECT_NAME" value="${PROJECT_NAME_BASE:-default-project}"/>
+    <!-- 定义日志文件存储路径的属性 -->
+    <property name="logging.file.path" value="./log"/>
+    <springProperty scope="context" name="logging.file.path" source="logging.file.path"/>
+    <property scope="context" name="LOG_MAX_HISTORY" value="${PROJECT_LOG_MAX_HISTORY:1}"/>
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule
+            conversionWord="wex"
+            converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule
+            conversionWord="wEx"
+            converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %green(%logger).%method:%L %msg%n"/>
+
+
+    <!--输出到控制台 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+            <!-- 设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--  logbook 日志打印  -->
+    <appender name="LOGBACK_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+
+
+    <appender name="FILEBEAT" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>File_Name</key>
+            <defaultValue>AepConsumerServe</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <!--如果只是想要 Error 级别的日志，那么需要过滤一下，默认是 info 级别的，ThresholdFilter-->
+                <!-- ThresholdFilter 过滤低于指定阈值的事件,如下拒绝所有低于error级别的日志，只输出error以及以上级别的日志：
+                -->
+                <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                    <level>INFO</level>
+                </filter>
+                <!--日志名称，如果没有File 属性，那么只会使用FileNamePattern的文件路径规则如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天的日志改名为今天的日期。即，<File> 的日志都是当天的。-->
+                <File>${logging.file.path}/filebeat.log</File>
+                <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
+                <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
+                    <fileNamePattern>${logging.file.path}/filebeat/filebeat-%d{yyyy-MM-dd}.part_%i.log</fileNamePattern>
+                    <!--                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+                    <!--                        &lt;!&ndash; 如果需要，可以设置最小的滚动大小 &ndash;&gt;-->
+                    <!--                        <minIndex>1</minIndex>-->
+                    <!--                        <maxIndex>5</maxIndex>-->
+                    <!--                    </timeBasedFileNamingAndTriggeringPolicy>-->
+                    <maxFileSize>100MB</maxFileSize>
+                    <!--日志文件保留天数-->
+                    <maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+                </rollingPolicy>
+                <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                    <providers>
+                        <mdc/>
+                        <timestamp>
+                            <timeZone>UTC</timeZone>
+                        </timestamp>
+                        <pattern>
+                            <pattern>
+                                {
+                                "@timestamp":"%d{yyyy-MM-dd'T'HH:mm:ssXXX}",
+                                "log_level": "%level",
+                                "thread": "%thread",
+                                "class_name": "%class",
+                                "method": "%method",
+                                "line_number": "%line",
+                                "message": "%message",
+                                "stack_trace": "%exception{5}"
+                                }
+                            </pattern>
+                        </pattern>
+                    </providers>
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+
+    <!-- logbook日志文件 -->
+    <appender name="REQUEST_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${logging.file.path}/request/request.log</file>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 按日期和大小滚动 -->
+            <fileNamePattern>${logging.file.path}/request/request-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <!--            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+            <!--                &lt;!&ndash; 如果需要，可以设置最小的滚动大小 &ndash;&gt;-->
+            <!--                <minIndex>1</minIndex>-->
+            <!--                <maxIndex>5</maxIndex>-->
+            <!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+            <maxFileSize>100MB</maxFileSize>
+            <!--日志文件保留天数-->
+            <maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%msg%n</Pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="ch.qos.logback" level="DEBUG"/>
+    <!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏 -->
+    <logger name="org.springframework" level="ERROR"/>
+    <!--mybatis log configure-->
+    <logger name="com.zaxxer.hikari" level="ERROR"/>
+    <logger name="com.apache.ibatis" level="ERROR"/>
+    <logger name="org.mybatis.spring" level="ERROR"/>
+    <logger name="com.baomidou.mybatisplus" level="ERROR"/>
+    <logger name="com.baomidou.dynamic.datasource" level="ERROR"/>
+    <logger name="java.sql.Connection" level="ERROR"/>
+    <logger name="java.sql.Statement" level="ERROR"/>
+    <logger name="java.sql.PreparedStatement" level="ERROR"/>
+    <!--微服务配置 -->
+    <logger name="org.reflections" level="ERROR"/>
+    <logger name="org.apache.shiro" level="ERROR"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.springframework.context" level="ERROR"/>
+    <logger name="org.springframework.beans" level="ERROR"/>
+    <logger name="org.apache.velocity" level="ERROR"/>
+    <logger name="org.eclipse.jetty" level="ERROR"/>
+    <logger name="io.undertow" level="ERROR"/>
+    <logger name="org.xnio" level="ERROR"/>
+    <logger name="org.jboss" level="ERROR"/>
+    <logger name="org.thymeleaf" level="ERROR"/>
+    <logger name="com.fasterxml.jackson" level="ERROR"/>
+    <logger name="springfox.documentation" level="ERROR"/>
+    <logger name="com.github.dozermapper.core" level="ERROR"/>
+    <logger name="org.hibernate.validator" level="ERROR"/>
+    <logger name="com.netflix.loadbalancer" level="ERROR"/>
+    <logger name="com.netflix.hystrix" level="ERROR"/>
+    <logger name="com.netflix.zuul" level="ERROR"/>
+    <logger name="org.springframework.boot" level="ERROR"/>
+    <logger name="com.alibaba.cloud" level="ERROR"/>
+    <logger name="com.alibaba.nacos" level="ERROR"/>
+    <logger name="de.codecentric" level="ERROR"/>
+    <logger name="org.apache.http" level="ERROR"/>
+    <logger name="com.netflix.config" level="ERROR"/>
+    <logger name="com.netflix.discovery" level="ERROR"/>
+    <logger name="com.wuwenze" level="ERROR"/>
+    <!-- 业务日志 -->
+    <Logger name="org.caesar" level="DEBUG"/>
+    <logger name="org.zalando.logbook.Logbook" level="DEBUG"/>
+
+
+    <!--
+        root节点是必选节点，用来指定最基础的日志输出级别，只有一个level属性。
+        level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，不能设置为INHERITED或者同义词NULL。
+        默认是DEBUG。
+        可以包含零个或多个元素，标识这个appender将会使用root设置的日志级别。
+     -->
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILEBEAT"/>
+    </root>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILEBEAT"/>
+    </root>
+
+
+    <!-- 请求外部接口日志输出 -->
+    <logger name="org.zalando.logbook.Logbook" level="TRACE">
+        <appender-ref ref="REQUEST_LOG"/>
+
+    </logger>
+    <!-- 请求外部接口日志输出 -->
+    <logger name="org.caesar.boot.start.feign" level="TRACE">
+        <appender-ref ref="REQUEST_LOG"/>
+    </logger>
+
+</configuration>

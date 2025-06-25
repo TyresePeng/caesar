@@ -1,0 +1,6 @@
+${AnsiColor.BLUE}   ____      _     ${AnsiColor.YELLOW} _____   ____   ${AnsiColor.BLUE}    _      ____
+${AnsiColor.BLUE}  / ___|    / \    ${AnsiColor.YELLOW}| ____| / ___|  ${AnsiColor.BLUE}   / \    |  _ \
+${AnsiColor.BLUE} | |       / _ \   ${AnsiColor.YELLOW}|  _|   \___ \  ${AnsiColor.BLUE}  / _ \   | |_) |
+${AnsiColor.BLUE} | |___   / ___ \  ${AnsiColor.YELLOW}| |___   ___) | ${AnsiColor.BLUE} / ___ \  |  _ <
+${AnsiColor.BLUE}  \____| /_/   \_\ ${AnsiColor.YELLOW}|_____| |____/  ${AnsiColor.BLUE}/_/   \_\ |_| \_\
+${AnsiColor.WHITE}  Running in Spring Boot ${spring-boot.version}, pid: ${pid}${AnsiColor.BLACK}

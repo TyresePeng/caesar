@@ -1,0 +1,77 @@
+server:
+  port: 8087
+# 应用名称
+spring:
+  application:
+    name: caesar-media
+  main:
+    banner-mode: off
+  profiles:
+    active: dev
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  global-config:
+    # 逻辑删除配置
+    db-config:
+      # 删除前
+      logic-not-delete-value: 1
+      # 删除后
+      logic-delete-value: 0
+    banner: false
+
+caesar:
+  system-error:
+    listener:
+      enable: true
+  exception:
+    enable: true
+
+logbook:
+  format:
+    style: json
+
+logging:
+  level:
+    org.zalando.logbook: TRACE
+
+
+management:
+  security:
+    enabled: false
+  # 可以指定暴露哪些actuator服务，'*'为全部，注意加上引号，被注释的写法表示只允许health，info
+  endpoints:
+    web:
+      exposure:
+        #include: health,info
+        include: '*'
+  endpoint:
+    # 表示可以通过/actuator/shutdown停止服务
+    shutdown:
+      enabled: true
+    # 表示health的内容显示的更加详细内容，不光只status
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  info: # 显示任意的应用信息，默认关闭，如果是更低一些的版本默认是开启的
+    env:
+      enabled: true
+
+
+live:
+  record:
+    path: /Users/peng.guo/Documents/code/caesar-app/caesar/temp/
+#抖音账户session检查
+dy-account-session-check:
+  #  30秒钟执行一次
+#  cron:  0/30 * * * * ?
+  cron:  0 0/5 * * * ?
+
+#任务重制检查，任务状态更改或任务新增加入调度策略
+cron-refresh-job:
+  #  30秒钟执行一次
+  cron:  0/30 * * * * ?

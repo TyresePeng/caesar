@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: caesar-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: caesar_crawler
+      MYSQL_USER: caesar_user
+      MYSQL_PASSWORD: userpassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_caesar_data:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "caesar_user", "-puserpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  caesar-media:
+    build: .
+    container_name: caesar-media
+    ports:
+      - "8087:8087"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/caesar_crawler?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+      SPRING_DATASOURCE_USERNAME: caesar_user
+      SPRING_DATASOURCE_PASSWORD: userpassword
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8087/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+volumes:
+  mysql_caesar_data:

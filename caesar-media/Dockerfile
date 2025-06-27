@@ -24,5 +24,8 @@ RUN apt-get update && \
 # 拷贝 Spring Boot 应用 JAR
 COPY target/caesar-media-0.0.1-SNAPSHOT.jar app.jar
 
+#临时目录
+RUN mkdir -p /app/temp
+
 # 启动 Spring Boot 应用（使用 prod 配置）
 ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]

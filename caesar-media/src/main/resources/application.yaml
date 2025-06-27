@@ -61,10 +61,6 @@ management:
     env:
       enabled: true
 
-
-live:
-  record:
-    path: /Users/peng.guo/Documents/code/caesar-app/caesar/temp/
 #抖音账户session检查
 dy-account-session-check:
   #  30秒钟执行一次

@@ -6,3 +6,7 @@ spring:
     password: root
   main:
     banner-mode: off
+
+live:
+  record:
+    path: /Users/peng.guo/Documents/code/caesar-app/caesar/temp/

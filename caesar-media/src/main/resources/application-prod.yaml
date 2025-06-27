@@ -6,3 +6,8 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
   main:
     banner-mode: off
+
+
+live:
+  record:
+    path: /app/temp/

@@ -257,7 +257,7 @@ docker-compose up -d
       <strong>微信群二维码</strong>
     </td>
     <td style="text-align:center; padding-left: 20px;">
-      <img src="https://github.com/TyresePeng/caesar/blob/main/docs/chat.png" width="180"/><br/>
+      <img src="https://github.com/TyresePeng/caesar/blob/main/docs/chat_tyrese.png" width="180"/><br/>
       <strong>作者微信</strong>
     </td>
   </tr>

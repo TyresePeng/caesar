@@ -247,3 +247,11 @@ docker-compose up -d
 > **开发者**：Tyrese  
 > **邮箱**：tyrese.guo@gmail.com  
 > **项目地址**：[GitHub](https://github.com/TyresePeng/caesar)
+
+### 🧑‍💻 微信交流群
+
+扫码添加开发者微信，备注“caesar”，邀请进交流群 👇
+
+![微信群二维码](https://github.com/TyresePeng/caesar/blob/main/docs/chat.png)
+
+![作者微信](https://github.com/TyresePeng/caesar/blob/main/docs/chat.png)

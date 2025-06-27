@@ -249,9 +249,18 @@ docker-compose up -d
 > **项目地址**：[GitHub](https://github.com/TyresePeng/caesar)
 
 ### 🧑‍💻 微信交流群
-
-扫码添加开发者微信，备注“caesar”，邀请进交流群 👇
-
-![微信群二维码](https://github.com/TyresePeng/caesar/blob/main/docs/chat.png)
-
-![作者微信](https://github.com/TyresePeng/caesar/blob/main/docs/chat.png)
+扫码添加开发者微信，备注 “Caesar”，邀请进交流群 👇
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/TyresePeng/caesar/blob/main/docs/chat.png" width="150"/><br/>
+        <strong>微信群二维码</strong>
+      </td>
+      <td align="center">
+        <img src="https://github.com/TyresePeng/caesar/blob/main/docs/chat.png" width="150"/><br/>
+        <strong>作者微信</strong>
+      </td>
+    </tr>
+  </table>
+</div>

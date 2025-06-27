@@ -219,7 +219,7 @@ mvn clean install
 
 ---
 
-### 打包方式
+### 打包运行方式
 
 ```bash
 # 自行安装docker环境 docker-compose 命令

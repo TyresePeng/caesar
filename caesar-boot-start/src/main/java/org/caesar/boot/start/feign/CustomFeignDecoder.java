@@ -54,7 +54,7 @@ public class CustomFeignDecoder implements Decoder {
                         } else if (String.class.equals(type)) {
                             return Util.toString(body.asReader());
                         } else {
-                            throw new DecodeException(response.status(), String.format("%s is not a type supported by this decoder.", type));
+                            throw new IllegalArgumentException(String.format("%s is not a type supported by this decoder.", type));
                         }
                     }
                 }

@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>caesar</artifactId>
         <groupId>caesar-parent</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>caesar</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
+
+
     <groupId>caesar</groupId>
     <artifactId>caesar-boot-start</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>caesar-boot-start</name>
     <description>caesar-boot-start</description>
     <url>https://github.com/TyresePeng/caesar</url>
+
     <dependencies>
+        <!-- 依赖 common 模块 -->
         <dependency>
-            <groupId>caesar-parent</groupId>
+            <groupId>org.caesar.common</groupId>
             <artifactId>caesar-common</artifactId>
         </dependency>
+
+        <!-- Spring Boot Web + Undertow -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
@@ -32,42 +42,49 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- AOP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- 配置处理器 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <!--应用监控-->
+
+        <!-- 应用监控 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!--prometheus-->
+        <!-- Prometheus 监控 -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
 
+        <!-- Spring Cloud OpenFeign -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!-- OkHttp -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
         </dependency>
+
+        <!-- Feign OkHttp 客户端 -->
         <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-okhttp</artifactId>
-            <version>10.12</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -75,14 +92,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <!-- 版本及配置由父模块 pluginManagement 统一管理 -->
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    <!-- 发布到 GitHub Packages 的仓库配置 -->
+
     <distributionManagement>
         <repository>
             <id>github</id>
@@ -90,4 +108,5 @@
             <url>https://maven.pkg.github.com/TyresePeng/caesar</url>
         </repository>
     </distributionManagement>
+
 </project>

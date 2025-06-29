@@ -12,7 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>caesar-boot-start</name>
     <description>caesar-boot-start</description>
-
+    <url>https://github.com/TyresePeng/caesar</url>
     <dependencies>
         <dependency>
             <groupId>caesar-parent</groupId>
@@ -82,4 +82,12 @@
             </plugin>
         </plugins>
     </build>
+    <!-- 发布到 GitHub Packages 的仓库配置 -->
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/TyresePeng/caesar</url>
+        </repository>
+    </distributionManagement>
 </project>

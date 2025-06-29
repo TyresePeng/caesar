@@ -4,8 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.caesar</groupId>
     <artifactId>caesar-agent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>caesar-agent</name>
+    <description>Java Agent HTTP Logging Project</description>
+    <url>https://github.com/TyresePeng/caesar</url>
 
     <properties>
         <logbook.version>2.3.0</logbook.version>
@@ -120,5 +122,12 @@
             </plugin>
         </plugins>
     </build>
-
+    <!-- 发布到 GitHub Packages 的仓库配置 -->
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/TyresePeng/caesar</url>
+        </repository>
+    </distributionManagement>
 </project>

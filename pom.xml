@@ -35,10 +35,11 @@
     <modules>
         <module>caesar-common</module>
         <module>caesar-boot-start</module>
-<!--        <module>caesar-example-test</module>-->
-<!--        <module>caesar-test</module>-->
+        <!--        <module>caesar-example-test</module>-->
+        <!--        <module>caesar-test</module>-->
         <module>caesar-agent</module>
-        <module>caesar-media</module>
+<!--        <module>caesar-media</module>-->
+<!--        <module>caesar-media-live</module>-->
 
     </modules>
 

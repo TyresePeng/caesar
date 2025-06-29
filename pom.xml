@@ -35,12 +35,9 @@
     <modules>
         <module>caesar-common</module>
         <module>caesar-boot-start</module>
-        <!--        <module>caesar-example-test</module>-->
-        <!--        <module>caesar-test</module>-->
         <module>caesar-agent</module>
-<!--        <module>caesar-media</module>-->
-<!--        <module>caesar-media-live</module>-->
-
+        <!--        爬虫模块-->
+        <module>caesar-media</module>
     </modules>
 
     <dependencyManagement>
@@ -146,16 +143,16 @@
         </plugins>
     </build>
     <!--    使用aliyun的Maven镜像源提升下载速度-->
-        <repositories>
-            <repository>
-                <id>aliyunmaven</id>
-                <name>aliyun</name>
-                <url>https://maven.aliyun.com/repository/public</url>
-            </repository>
-            <repository>
-                <id>central2</id>
-                <name>central2</name>
-                <url>https://repo1.maven.org/maven2/</url>
-            </repository>
-        </repositories>
+    <repositories>
+        <repository>
+            <id>aliyunmaven</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+        <repository>
+            <id>central2</id>
+            <name>central2</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
 </project>
